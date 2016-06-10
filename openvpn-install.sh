@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # OpenVPN road warrior installer for Debian, Ubuntu and CentOS
 
 # This script will work on Debian, Ubuntu, CentOS and probably other distros
@@ -232,21 +232,181 @@ else
 	chown nobody:$GROUPNAME /etc/openvpn/crl.pem
 	# Generate key for tls-auth
 	openvpn --genkey --secret /etc/openvpn/ta.key
+	#Create TUN ADAPTER
+	openvpn --mktun --dev tun1
+	ip link set tun1 up	
+	openvpn --mktun --dev tun2
+	ip link set tun2 up
+	openvpn --mktun --dev tun3
+	ip link set tun3 up	
+	openvpn --mktun --dev tun4
+	ip link set tun4 up
+	openvpn --mktun --dev tun5
+	ip link set tun5 up	
+	openvpn --mktun --dev tun6
+	ip link set tun6 up
+	openvpn --mktun --dev tun7
+	ip link set tun7 up	
+	openvpn --mktun --dev tun8
+	ip link set tun8 up
+	#create ip static
+	mkdir /etc/openvpn/ipstatic
+	#firewall
+    sudo ufw disable
+    sudo ufw default deny
+    sudo ufw allow 1180
+    sudo ufw allow 1181
+    sudo ufw allow 1182
+	sudo ufw allow 1183
+	sudo ufw allow 1184
+	sudo ufw allow 1185
+    sudo ufw allow 1186
+    sudo ufw allow 1187
+	sudo ufw allow 1188
+	#ssh
+	sudo ufw allow 1200
+	#tightvnc
+	sudo ufw allow 5900
+	#Team viewer
+	sudo ufw allow 5938
+    sudo ufw enable
 	# Generate server.conf
 	echo "port $PORT
 proto udp
-dev tun
+dev tun1
 sndbuf 0
 rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
 ca ca.crt
 cert server.crt
 key server.key
 dh dh.pem
 tls-auth ta.key 0
 topology subnet
-server 10.8.0.0 255.255.255.0
-ifconfig-pool-persist ipp.txt" > /etc/openvpn/server.conf
+server 10.8.1.0 255.255.255.0
+status openvpn-status1.log
+ifconfig-pool-persist ipp1.txt" > /etc/openvpn/server.conf
+	# Generate server2.conf
+	echo "port $PORT
+proto udp
+dev tun2
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.2.0 255.255.255.0
+status openvpn-status2.log
+ifconfig-pool-persist ipp2.txt" > /etc/openvpn/server2.conf
+	# Generate server3.conf
+	echo "port $PORT
+proto udp
+dev tun3
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.3.0 255.255.255.0
+status openvpn-status3.log
+ifconfig-pool-persist ipp3.txt" > /etc/openvpn/server3.conf
+	# Generate server4.conf
+	echo "port $PORT
+proto udp
+dev tun4
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.4.0 255.255.255.0
+status openvpn-status4.log
+ifconfig-pool-persist ipp4.txt" > /etc/openvpn/server4.conf
+	# Generate server5.conf
+	echo "port $PORT
+proto udp
+dev tun5
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.5.0 255.255.255.0
+status openvpn-status5.log
+ifconfig-pool-persist ipp5.txt" > /etc/openvpn/server5.conf
+	# Generate server6.conf
+	echo "port $PORT
+proto udp
+dev tun6
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.6.0 255.255.255.0
+status openvpn-status6.log
+ifconfig-pool-persist ipp6.txt" > /etc/openvpn/server6.conf
+	# Generate server7.conf
+	echo "port $PORT
+proto udp
+dev tun7
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.7.0 255.255.255.0
+status openvpn-status7.log
+ifconfig-pool-persist ipp7.txt" > /etc/openvpn/server7.conf
+	# Generate server8.conf
+	echo "port $PORT
+proto udp
+dev tun8
+sndbuf 0
+rcvbuf 0
+client-config-dir /etc/openvpn/ipstatic
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+tls-auth ta.key 0
+topology subnet
+server 10.8.8.0 255.255.255.0
+status openvpn-status8.log
+ifconfig-pool-persist ipp8.txt" > /etc/openvpn/server8.conf
+
 	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server2.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server3.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server4.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server5.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server6.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server7.conf
+	echo 'push "redirect-gateway def1 bypass-dhcp"' >> /etc/openvpn/server8.conf
 	# DNS
 	case $DNS in
 		1) 
@@ -258,6 +418,21 @@ ifconfig-pool-persist ipp.txt" > /etc/openvpn/server.conf
 		2) 
 		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server.conf
 		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server2.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server2.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server3.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server3.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server4.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server4.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server5.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server5.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server6.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server6.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server7.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server7.conf
+		echo 'push "dhcp-option DNS 8.8.8.8"' >> /etc/openvpn/server8.conf
+		echo 'push "dhcp-option DNS 8.8.4.4"' >> /etc/openvpn/server8.conf
+			
 		;;
 		3)
 		echo 'push "dhcp-option DNS 208.67.222.222"' >> /etc/openvpn/server.conf
@@ -282,9 +457,72 @@ user nobody
 group $GROUPNAME
 persist-key
 persist-tun
-status openvpn-status.log
 verb 3
 crl-verify crl.pem" >> /etc/openvpn/server.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server2.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server3.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server4.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server5.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server6.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server7.conf
+	echo "keepalive 10 120
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group $GROUPNAME
+persist-key
+persist-tun
+verb 3
+crl-verify crl.pem" >> /etc/openvpn/server8.conf
+
 	# Enable net.ipv4.ip_forward for the system
 	if [[ "$OS" = 'debian' ]]; then
 		sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
